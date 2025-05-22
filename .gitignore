@@ -3,4 +3,3 @@ data/**
 PointCloudGeneration/
 PointCloudGeneration/**
 data.rar
-s3_cross_modal_fusion/fusion_tensor.pt
