@@ -1,0 +1,5 @@
+Model,Avg Inference Time (ms) per Batch
+Concat + MLP,4.15
+Attention Fusion,1.74
+Cross Attention Fusion,2.17
+Tensor Fusion,66.24

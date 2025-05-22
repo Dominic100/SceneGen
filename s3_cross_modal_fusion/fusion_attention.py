@@ -1,41 +1,43 @@
+# fusion_attention.py
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class AttentionFusion(nn.Module):
-    def __init__(self, image_dim, audio_dim, text_dim, hidden_dim=512, output_dim=512):
+    def __init__(self, image_dim, audio_dim, text_dim, output_dim=512):
         super().__init__()
+        
+        # Linear projections for each modality
+        self.image_proj = nn.Linear(image_dim, output_dim)
+        self.audio_proj = nn.Linear(audio_dim, output_dim)
+        self.text_proj = nn.Linear(text_dim, output_dim)
 
-        # Project all modalities to same hidden_dim
-        self.image_proj = nn.Linear(image_dim, hidden_dim)
-        self.audio_proj = nn.Linear(audio_dim, hidden_dim)
-        self.text_proj = nn.Linear(text_dim, hidden_dim)
+        # Attention mechanism
+        self.attn = nn.MultiheadAttention(embed_dim=output_dim, num_heads=4, batch_first=True)
 
-        # Attention weights over 3 modalities
-        self.attn_weights = nn.Parameter(torch.ones(3))  # Learnable weights
-
-        # Final projection
-        self.output_proj = nn.Linear(hidden_dim, output_dim)
+        # Final output layer (optional, here just identity)
+        self.output_proj = nn.Identity()
 
     def forward(self, image_emb, audio_emb, text_emb):
-        image_emb = image_emb.squeeze(1)  # (B, 512)
-        audio_emb = audio_emb.squeeze(1)  # (B, 2048)
-        text_emb = text_emb.squeeze(1)    # (B, 512)
+        # Input shape: (B, 1, D) → squeeze to (B, D)
+        image = self.image_proj(image_emb.squeeze(1))  # (B, output_dim)
+        audio = self.audio_proj(audio_emb.squeeze(1))  # (B, output_dim)
+        text = self.text_proj(text_emb.squeeze(1))     # (B, output_dim)
 
-        # Project to common space
-        image_proj = self.image_proj(image_emb)  # (B, hidden)
-        audio_proj = self.audio_proj(audio_emb)
-        text_proj = self.text_proj(text_emb)
+        # Stack into sequence for attention
+        x = torch.stack([image, audio, text], dim=1)   # (B, 3, output_dim)
 
-        # Stack for attention
-        stacked = torch.stack([image_proj, audio_proj, text_proj], dim=1)  # (B, 3, hidden)
+        # Self-attention
+        attn_output, _ = self.attn(x, x, x)            # (B, 3, output_dim)
 
-        # Softmax over learnable weights
-        attn = F.softmax(self.attn_weights, dim=0)  # (3,)
-        attn = attn.unsqueeze(0).unsqueeze(-1)      # (1, 3, 1)
+        # Pool (mean across sequence length)
+        fused = attn_output.mean(dim=1)                # (B, output_dim)
 
-        # Apply attention weights
-        fused = torch.sum(attn * stacked, dim=1)    # (B, hidden)
+        return self.output_proj(fused)
 
-        # Final projection
-        return self.output_proj(fused)              # (B, output_dim)
+    def project_modalities(self, image_emb, audio_emb, text_emb):
+        # Used to compute average projection as a training target
+        image = self.image_proj(image_emb.squeeze(1))
+        audio = self.audio_proj(audio_emb.squeeze(1))
+        text = self.text_proj(text_emb.squeeze(1))
+        return (image + audio + text) / 3.0
