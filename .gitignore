@@ -3,3 +3,5 @@ data/**
 PointCloudGeneration/
 PointCloudGeneration/**
 data.rar
+SceneGen/client/node_modules
+PointCloud/classroom.obj

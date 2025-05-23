@@ -1,0 +1,13 @@
+flask==2.0.1
+flask-cors==3.0.10
+opencv-python==4.5.3.56
+tensorflow==2.8.0
+numpy==1.22.3
+pillow==9.0.1
+scipy==1.8.0
+matplotlib==3.5.1
+werkzeug==2.0.2
+uuid==1.30
+ffmpeg-python==0.2.0
+base64==0.b85
+hashlib==3.2
