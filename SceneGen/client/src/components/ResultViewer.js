@@ -1,57 +1,102 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import './ResultViewer.css';
+import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader'; // Make sure this is imported
 
-function ResultViewer({ sessionId, onDownload }) {
-  const containerRef = useRef(null);
-  const sceneRef = useRef(null);
-  const cameraRef = useRef(null);
-  const rendererRef = useRef(null);
-  const controlsRef = useRef(null);
-
+function ResultViewer({ resultUrl }) {
+  const mountRef = useRef(null);
+  
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Initialize THREE.js scene
-    const container = containerRef.current;
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    // Scene
+    if (!resultUrl) return;
+    
+    // Scene setup
+    const width = mountRef.current.clientWidth;
+    const height = mountRef.current.clientHeight;
+    
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf0f0f0);
-    sceneRef.current = scene;
-
-    // Camera
+    scene.background = new THREE.Color(0x111111);
+    
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.z = 5;
-    cameraRef.current = camera;
-
-    // Renderer
+    
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // Controls
+    mountRef.current.appendChild(renderer.domElement);
+    
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 1, 1).normalize();
+    scene.add(directionalLight);
+    
+    // Add orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controlsRef.current = controls;
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0x404040);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
-
-    // Load PLY model - this is fake since we don't actually have the model yet
-    // We'll just create a placeholder mesh for visualization
-    createPlaceholderMesh();
-
+    controls.dampingFactor = 0.05;
+    
+    // Add loading indicator
+    console.log('Loading 3D model from:', resultUrl);
+    const loadingElem = document.createElement('div');
+    loadingElem.style.position = 'absolute';
+    loadingElem.style.top = '50%';
+    loadingElem.style.left = '50%';
+    loadingElem.style.transform = 'translate(-50%, -50%)';
+    loadingElem.style.color = 'white';
+    loadingElem.style.fontSize = '24px';
+    loadingElem.textContent = 'Loading 3D Model...';
+    mountRef.current.appendChild(loadingElem);
+    
+    // Load PLY file
+    const loader = new PLYLoader();
+    loader.load(
+      resultUrl,
+      (geometry) => {
+        console.log('PLY loaded successfully:', geometry);
+        // Remove loading indicator
+        if (mountRef.current.contains(loadingElem)) {
+          mountRef.current.removeChild(loadingElem);
+        }
+        
+        // Center the geometry
+        geometry.computeBoundingBox();
+        const center = new THREE.Vector3();
+        geometry.boundingBox.getCenter(center);
+        geometry.center();
+        
+        // Scale the geometry to fit the view
+        geometry.computeBoundingSphere();
+        const radius = geometry.boundingSphere.radius;
+        const scale = 2.0 / radius;
+        geometry.scale(scale, scale, scale);
+        
+        // Create material with vertex colors
+        const material = new THREE.PointsMaterial({
+          size: 0.01,
+          vertexColors: true
+        });
+        
+        // Create and add point cloud to scene
+        const pointCloud = new THREE.Points(geometry, material);
+        scene.add(pointCloud);
+        
+        // Adjust camera position
+        camera.position.z = 3;
+        
+        // Initial render
+        renderer.render(scene, camera);
+      },
+      (xhr) => {
+        const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
+        loadingElem.textContent = `Loading 3D Model... ${percent}%`;
+      },
+      (error) => {
+        console.error('Error loading PLY:', error);
+        loadingElem.textContent = 'Error loading 3D model';
+      }
+    );
+    
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
@@ -59,76 +104,40 @@ function ResultViewer({ sessionId, onDownload }) {
       renderer.render(scene, camera);
     };
     animate();
-
-    // Handle resize
+    
+    // Handle window resize
     const handleResize = () => {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = mountRef.current.clientWidth;
+      const height = mountRef.current.clientHeight;
+      
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
     window.addEventListener('resize', handleResize);
-
-    // Cleanup
+    
+    // Cleanup on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
-      container.removeChild(renderer.domElement);
-      renderer.dispose();
+      if (mountRef.current && renderer.domElement) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+      if (mountRef.current && mountRef.current.contains(loadingElem)) {
+        mountRef.current.removeChild(loadingElem);
+      }
     };
-  }, []);
-
-  const createPlaceholderMesh = () => {
-    const scene = sceneRef.current;
-    
-    // Create a point cloud-like geometry
-    const geometry = new THREE.BufferGeometry();
-    const numPoints = 5000;
-    const positions = new Float32Array(numPoints * 3);
-    const colors = new Float32Array(numPoints * 3);
-    
-    for (let i = 0; i < numPoints; i++) {
-      const i3 = i * 3;
-      // Position in a sphere
-      const radius = 2 + Math.random() * 1;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
-      
-      // Color based on position
-      colors[i3] = 0.5 + positions[i3] / 5;
-      colors[i3 + 1] = 0.5 + positions[i3 + 1] / 5;
-      colors[i3 + 2] = 0.5 + positions[i3 + 2] / 5;
-    }
-    
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    
-    const material = new THREE.PointsMaterial({
-      size: 0.05,
-      vertexColors: true
-    });
-    
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-  };
-
+  }, [resultUrl]);
+  
   return (
-    <div className="result-viewer-container">
-      <h2>3D Scene Generated Successfully!</h2>
-      <div className="result-viewer" ref={containerRef}></div>
-      <div className="result-controls">
-        <button onClick={onDownload} className="download-button">
-          Download 3D Model
-        </button>
-        <p className="result-info">
-          You can rotate the model using your mouse and zoom with the scroll wheel.
-        </p>
-      </div>
-    </div>
+    <div 
+      ref={mountRef} 
+      style={{ 
+        width: '100%', 
+        height: '500px', 
+        position: 'relative',
+        backgroundColor: '#222'
+      }}
+    />
   );
 }
 

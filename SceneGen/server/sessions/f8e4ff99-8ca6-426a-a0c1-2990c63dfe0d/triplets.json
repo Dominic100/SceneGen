@@ -1,0 +1,107 @@
+[
+  {
+    "id": "triplet_frame_001",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_001.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_001.wav",
+    "text": "classroom\r\n",
+    "timestamp": 0.0
+  },
+  {
+    "id": "triplet_frame_002",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_002.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_002.wav",
+    "text": "classroom\r\n",
+    "timestamp": 2.0
+  },
+  {
+    "id": "triplet_frame_003",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_003.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_003.wav",
+    "text": "classroom\r\n",
+    "timestamp": 4.0
+  },
+  {
+    "id": "triplet_frame_004",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_004.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_004.wav",
+    "text": "classroom\r\n",
+    "timestamp": 6.0
+  },
+  {
+    "id": "triplet_frame_005",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_005.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_005.wav",
+    "text": "classroom\r\n",
+    "timestamp": 8.0
+  },
+  {
+    "id": "triplet_frame_006",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_006.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_006.wav",
+    "text": "classroom\r\n",
+    "timestamp": 10.0
+  },
+  {
+    "id": "triplet_frame_007",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_007.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_007.wav",
+    "text": "classroom\r\n",
+    "timestamp": 12.0
+  },
+  {
+    "id": "triplet_frame_008",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_008.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_008.wav",
+    "text": "classroom\r\n",
+    "timestamp": 14.0
+  },
+  {
+    "id": "triplet_frame_009",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_009.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_009.wav",
+    "text": "classroom\r\n",
+    "timestamp": 16.0
+  },
+  {
+    "id": "triplet_frame_010",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_010.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_010.wav",
+    "text": "classroom\r\n",
+    "timestamp": 18.0
+  },
+  {
+    "id": "triplet_frame_011",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_011.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_011.wav",
+    "text": "classroom\r\n",
+    "timestamp": 20.0
+  },
+  {
+    "id": "triplet_frame_012",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_012.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_012.wav",
+    "text": "classroom\r\n",
+    "timestamp": 22.0
+  },
+  {
+    "id": "triplet_frame_013",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_013.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_013.wav",
+    "text": "classroom\r\n",
+    "timestamp": 24.0
+  },
+  {
+    "id": "triplet_frame_014",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_014.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_014.wav",
+    "text": "classroom\r\n",
+    "timestamp": 26.0
+  },
+  {
+    "id": "triplet_frame_015",
+    "framePath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\frames\\frame_015.jpg",
+    "audioPath": "C:\\Aneesh\\EDI VI\\SceneGen\\server\\sessions\\f8e4ff99-8ca6-426a-a0c1-2990c63dfe0d\\audio\\audio_015.wav",
+    "text": "classroom\r\n",
+    "timestamp": 28.0
+  }
+]

@@ -16,8 +16,8 @@ def main():
     else:
         mesh = mesh_or_scene
     
-    # Sample N random points on the surface
-    N = 100000  # adjust for sparsity
+    # Sample N random points on the surface - reduce number for compatibility
+    N = 20000  # Lower point count for better performance
     points, face_indices = trimesh.sample.sample_surface(mesh, N)
     
     # Calculate vertex colors based on position (for visualization)
@@ -37,15 +37,39 @@ def main():
     pcd.points = o3d.utility.Vector3dVector(points)
     pcd.colors = o3d.utility.Vector3dVector(colors.astype(np.float64) / 255.0)
     
-    # Save as PLY
+    # Create simplified PLY file directly using manual writing
+    # This ensures maximum compatibility with Three.js
     sparse_ply_path = "sparse_point_cloud.ply"
-    o3d.io.write_point_cloud(sparse_ply_path, pcd)
+    write_compatible_ply(sparse_ply_path, points, colors)
     
     # Copy PLY file to the target location
     copy_to_target_location(sparse_ply_path)
     
     # Visualize
     o3d.visualization.draw_geometries([pcd])
+
+def write_compatible_ply(filename, points, colors):
+    """Write a simplified PLY file that's guaranteed to be compatible with Three.js"""
+    with open(filename, 'w') as f:
+        # Write header
+        f.write("ply\n")
+        f.write("format ascii 1.0\n")
+        f.write(f"element vertex {len(points)}\n")
+        f.write("property float x\n")
+        f.write("property float y\n")
+        f.write("property float z\n")
+        f.write("property uchar red\n")
+        f.write("property uchar green\n")
+        f.write("property uchar blue\n")
+        f.write("end_header\n")
+        
+        # Write vertex data
+        for i in range(len(points)):
+            x, y, z = points[i]
+            r, g, b = colors[i]
+            f.write(f"{x} {y} {z} {r} {g} {b}\n")
+    
+    print(f"Written compatible PLY file to {filename}")
 
 def copy_to_target_location(ply_path):
     """Copy PLY file to the appropriate location for the server"""
@@ -67,7 +91,18 @@ def copy_to_target_location(ply_path):
     # Copy the file
     shutil.copy2(ply_path, target_path)
     print(f"Point cloud copied to: {target_path}")
+    print(f"File exists after copy: {os.path.exists(target_path)}")
+    print(f"File size: {os.path.getsize(target_path)} bytes")
     print(f"This will be used by the server as the 3D model result")
+    
+    # Verify the target file is readable as text
+    try:
+        with open(target_path, 'r') as f:
+            first_few_lines = [f.readline() for _ in range(5)]
+            print("First few lines of target file:")
+            print(''.join(first_few_lines))
+    except UnicodeDecodeError:
+        print("WARNING: Target file is not in ASCII format - may cause rendering issues")
 
 if __name__ == "__main__":
     main()
